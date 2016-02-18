@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Spotify API</title>
+    <style type="text/css">
+        button, input { font-size: 26px; margin-top: 30px; }
+        legend { font-size: 30px; } 
+    </style>
+</head>
+<body>
+
+    <form>
+        <fieldset>
+            <legend>Look for the Artist</legend>
+            <input type="text" name="LookForArtistInSpotify"
+                   placeholder="write an artist to find" >
+            <button>search for the Artist</button>
+        </fieldset>
+
+        <select>
+            
+        </select>
+    </form>
+
+    <h1></h1>
+    <ul id="list-repos"></ul>
+
+
+    <script src="https://code.jquery.com/jquery-2.2.0.js"></script>
+    <script>
+
+/* @begin event button-click to get artists from Spotify */
+    /*    
+        var $button = $("form button"); 
+    // why???
+        var $artistsSelect = $("#artists");
+        var $albumSelect = $("#album");
+*/
+
+        $("button").on("click", function(e) {
+
+            e.preventDefault();
+// it stops the button to reload the page and send data to the server
+
+            var $myInput = $("input");
+          // select the keyboard input value from the Form   
+
+            var sArtistName = $myInput.val();
+        // assign the value artistName the keyboard input value from the Form    
+           
+           // console.log(artistName);
+
+            var sSpotifyArtistUrl = "https://api.spotify.com/v1/search?type=artist&query=" + sArtistName;
+            
+            console.log(sSpotifyArtistUrl);
+        // url to Spotify Artist JSON data
+
+
+            var artistList = "";
+        // array from where we can print out the artist    
+
+    
+            $.ajax({
+                url: sSpotifyArtistUrl,
+                dataType: "json",
+                success: function( dataJson ) {
+                    // console.log(dataJson);
+   
+                    var aArtistsFound = dataJson.artists.items;
+                    // console.log(aArtistsFound);
+
+                    var nNumArtists = aArtistsFound.length;
+                    var oCurrentArtist;
+                    var sArtistOption ="";
+
+                    for(var i=0; i<nNumArtists; i++) {
+                        oCurrentArtist = aArtistsFound[i]
+                        sArtistOption += "<option>" + oCurrentArtist.name +"</option>";
+                        //console.log(oCurrentArtist.name);
+                    }                     
+         /*        
+                    var nNumArtists = dataJson.length;
+                        for (var i=0; i<nNumArtists; i++) {
+                            artistList += "<li>" + dataJson[i].name +"</li>"
+                    }
+
+                    $("#list-repos")
+                        .html(artistList)
+                        .siblings("h1")
+                            .html(artistName)
+        */
+
+                }
+            })
+
+
+        }); // close click event button  
+
+    /*  Create an app that:
+
+        Allow us to search for an artist
+        It should show a list of artists found
+        When clicking an album it should show a list of albums
+        When clicking an album it should show a list of tracks
+        When clicking a track it should reproduce a preview of the song (30'')
+    */
+    </script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Spotify API project</title>
+</head>
+<body>
+
+	<form>
+		<fieldset>
+			<legend>Look for an artist</legend>
+			<input value="" placeholder="Write the artist to find...">
+			<button>search!</button>
+		</fieldset>
+	</form>
+
+	<script src="https://code.jquery.com/jquery-2.2.0.js"></script>
+	
+	<script type="text/javascript">
+	
+		/* @begin event button-click to get artists from spotify */
+		var $button = $("form button");
+
+		$button.on("click", function(e) {
+
+			e.preventDefault
+// it stops the button to reload the page and send data to the server
+
+			var $input = $("form input");
+// select the keyboard input value from the Form 
+			
+			var sArtistToFind = $input.val();
+ // assign the value sArtistToFind the keyboard input value from the Form   
+
+
+			var getArtistsUrl = "https://api.spotify.com/v1/search?type=artist&query=" + sArtistToFind; 
+/* this url let us connect to Spotify database and look for the speficied artist */
+
+			$.
+		}
+
+
+
+	</script>
+
+</body>
+</html>	
