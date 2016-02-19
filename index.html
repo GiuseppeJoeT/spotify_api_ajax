@@ -18,16 +18,24 @@
 		</fieldset>
 	</form>
 
+	<form>
+		<fieldset>
+			<legend>Select from the artists found</legend>
+			<select id="artists"></select>
+		</fieldset>
+	</form>
+
 	<script src="https://code.jquery.com/jquery-2.2.0.js"></script>
 	
 	<script type="text/javascript">
 	
 		/* @begin event button-click to get artists from spotify */
 		var $button = $("form button");
+		var $artistsSelect = $("#artists");
 
 		$button.on("click", function(e) {
 
-			e.preventDefault
+			e.preventDefault();
 // it stops the button to reload the page and send data to the server
 
 			var $input = $("form input");
@@ -37,12 +45,32 @@
  // assign the value sArtistToFind the keyboard input value from the Form   
 
 
-			var getArtistsUrl = "https://api.spotify.com/v1/search?type=artist&query=" + sArtistToFind; 
+			var sGetArtistsUrl = "https://api.spotify.com/v1/search?type=artist&query=" + sArtistToFind;
 /* this url let us connect to Spotify database and look for the speficied artist */
+			
+			// console.log (sGetArtistsUrl);
 
-			$.
-		}
+			$.ajax({
+				url: sGetArtistsUrl,
+				dataType: "json",
+				success: function( oDataReceived ) {
+					var aArtists = oDataReceived.artists.items;
+/* access to the 'items property' in the 'artists' array which is in the json file */	
+                    var oCurrentArtist;
+     //  object that stored the current artist selected                
 
+                    var sOptions = "<option>Please choose your favorite album...</option>";
+
+                    $.each( aArtists, function( index, value ) {
+                    	oCurrentArtist = value;
+                    	sOptions += "<option value='" + oCurrentArtist.id + "'>" + oCurrentArtist.name + "</option>";
+                    });
+
+                    $artistsSelect.html(sOptions); 
+
+				}
+			});
+		});
 
 
 	</script>
