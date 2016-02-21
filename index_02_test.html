@@ -3,6 +3,10 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Spotify API project</title>
+	 <style type="text/css">
+        button, input { font-size: 26px; margin-top: 30px; }
+        legend { font-size: 30px; } 
+    </style>
 </head>
 <body>
 
@@ -21,55 +25,55 @@
 		</fieldset>
 	</form>
 
-	<form>
-		<fieldset>
-			<legend>Select an album</legend>
-			<select id="albums"></select>
-		</fieldset>
-	</form>
-
-	<ul></ul>
-
 	<script src="https://code.jquery.com/jquery-2.2.0.js"></script>
-	<script>
-
-
-
+	
+	<script type="text/javascript">
+	
 		/* @begin event button-click to get artists from spotify */
 		var $button = $("form button");
 		var $artistsSelect = $("#artists");
-		var $albumsSelect = $("#albums");
-		var $TracksContainer = $("ul");
 
 		$button.on("click", function(e) {
 
 			e.preventDefault();
+// it stops the button to reload the page and send data to the server
 
 			var $input = $("form input");
+// select the keyboard input value from the Form 
+			
 			var sArtistToFind = $input.val();
-			var sGetArtistsUrl = "https://api.spotify.com/v1/search?type=artist&query=" + sArtistToFind
+ // assign the value sArtistToFind the keyboard input value from the Form   
+
+
+			var sGetArtistsUrl = "https://api.spotify.com/v1/search?type=artist&query=" + sArtistToFind;
+/* this url let us connect to Spotify database and look for the speficied artist */
+			
+			// console.log (sGetArtistsUrl);
 
 			$.ajax({
 				url: sGetArtistsUrl,
 				dataType: "json",
 				success: function( oDataReceived ) {
-
 					var aArtists = oDataReceived.artists.items;
-					var oCurrentArtist;
-					var sOptions = "<option>Please select your artist...</option>";
+/* access to the 'items property' in the 'artists' array which is in the json file */	
+					// debug - console.log(aArtists);
 
-					$.each( aArtists, function( index, value ) {
-						oCurrentArtist = value;
-						sOptions += "<option value='" + oCurrentArtist.id + "'>" + oCurrentArtist.name + "</option>"
-					});
+                    var oCurrentArtist;
+     //  object that stored the current artist selected                
 
-					$artistsSelect.html(sOptions);
+                    var sOptions = "<option>Please choose your favorite album...</option>";
+
+                    $.each( aArtists, function( index, value ) {
+                    	oCurrentArtist = value;
+                    	sOptions += "<option value='" + oCurrentArtist.id + "'>" + oCurrentArtist.name + "</option>";
+                    });
+
+                    $artistsSelect.html(sOptions); 
 
 				}
 			})
-		})
+		});
 		/* @end event button-click to get artists from spotify  */
-
 
 
 
@@ -102,39 +106,12 @@
 		});
 		/* @end event get albums when artist is selected */
 
+		
 
-		/* @begin event get tracks when album is selected */
-		$albumsSelect.on("change", function(e) {
-
-			var $optionSelected = $(this).find("option:selected");
-			var sIdAlbum = $optionSelected.val();
-
-			var sGetTracksUrl = "https://api.spotify.com/v1/albums/" + sIdAlbum + "/tracks";
-
-			$.ajax({
-				url: sGetTracksUrl,
-				dataType: "json",
-				success: function( oDataReceived ) {
-						var aTracks = oDataReceived.items;
-						var oCurrentTrack;
-						var sItems = "";
-
-						$.each( aTracks, function( index, value ) {
-							oCurrentTrack = value;
-							console.log (oCurrentTrack);
-							sItems += "<li><a target='_blank' href='" + oCurrentTrack.preview_url+ "'>"+ oCurrentTrack.name + "</a></li>"
-						});
-
-						$TracksContainer.html(sItems)
-				}
-			});
-
-		});
-
-		/* @end event get tracks when album is selected */
 
 
 
 	</script>
+
 </body>
-</html>
+</html>	
